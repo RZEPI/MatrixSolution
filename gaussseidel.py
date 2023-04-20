@@ -10,8 +10,8 @@ class GaussSeidel(MyMatrix):
     def compute_result(self):
         r = np.ones(self.N)
         D = np.diag(np.diag(self.matrix))
-        L = np.tril(self.matrix, -2)
-        U = np.triu(self.matrix, 2)
+        L = np.tril(self.matrix, -1)
+        U = np.triu(self.matrix, 1)
         residuum = 1
 
         expression1 = D + L
@@ -22,7 +22,8 @@ class GaussSeidel(MyMatrix):
             r = -np.linalg.solve(expression1, (U @ r)) + expression2
             residuum = (self.matrix @ r) - self.b_vec
             self.iterations += 1
+        self.result = r
     
-    def print_results(self):
+    def print_result(self):
         print(f"The Gauss-Seidel method ended in {self.iterations} iterations\nResult:\n")
         print(self.result)
