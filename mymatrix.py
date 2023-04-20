@@ -3,6 +3,8 @@ import numpy as np
 
 class MyMatrix:
     f = 1
+    NORM = 10**(-9)
+    name = "numpy's solve"
 
     def __init__(self, x1, x2, x3, N=903):
         self.N = N
@@ -37,5 +39,12 @@ class MyMatrix:
     def compute_result(self):
         self.result =  np.linalg.solve(self.matrix, self.b_vec)
 
-    def print_result(self):
-        print(self.result)
+    def print_result(self, showMatrix=False):
+        output = f"The {self.name} method ended"
+        if self.name != "numpy's solve":
+            output += f" in {self.iterations}"
+        output += '\n'
+        if showMatrix:
+            output += f"Result:{self.result}"
+        print(output)
+           

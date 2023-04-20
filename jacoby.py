@@ -1,9 +1,7 @@
 from mymatrix import *
 
-
-class GaussSeidel(MyMatrix):
-    name = "GaussSeidel's"
-
+class Jacoby(MyMatrix):
+    name = "Jacoby's"
     def __init__(self,x1,x2,x3, N=903):
         super().__init__(x1,x2,x3,N)
 
@@ -13,14 +11,13 @@ class GaussSeidel(MyMatrix):
         L = np.tril(self.matrix, -1)
         U = np.triu(self.matrix, 1)
         residuum = 1
-
-        expression1 = D + L
-        expression2 = np.linalg.solve(expression1, self.b_vec)
         self.iterations = 0
-        
+
+        expression1 = -np.linalg.solve(D, (L+U))
+        expression2 = np.linalg.solve(D, self.b_vec)
+
         while np.linalg.norm(residuum) > super().NORM:
-            r = -np.linalg.solve(expression1, (U @ r)) + expression2
+            r = (expression1 @ r) + expression2
             residuum = (self.matrix @ r) - self.b_vec
             self.iterations += 1
         self.result = r
-    
