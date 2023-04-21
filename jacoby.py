@@ -20,4 +20,8 @@ class Jacoby(MyMatrix):
             r = (expression1 @ r) + expression2
             residuum = (self.matrix @ r) - self.b_vec
             self.iterations += 1
+
+            if self.iterations > super().MAX_ITERS:
+                self.iterations = math.inf
+                break
         self.result = r

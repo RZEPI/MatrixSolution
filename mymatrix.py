@@ -1,10 +1,11 @@
 import numpy as np
-
+import math
 
 class MyMatrix:
     f = 1
     NORM = 10**(-9)
     name = "numpy's solve"
+    MAX_ITERS = 1000
 
     def __init__(self, x1, x2, x3, N=903):
         self.N = N
@@ -42,8 +43,13 @@ class MyMatrix:
     def print_result(self, showMatrix=False):
         output = f"The {self.name} method ended"
         if self.name != "numpy's solve":
-            output += f" in {self.iterations}"
+            if self.iterations == math.inf:
+                output += f"Method doesn't converage."
+            else:
+                output += f" in {self.iterations} iterations."
+        
         output += '\n'
+        
         if showMatrix:
             output += f"Result:{self.result}"
         print(output)
