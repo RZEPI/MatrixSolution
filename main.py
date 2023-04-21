@@ -12,10 +12,12 @@ def solve_matrix(data):
 
     gauss_seidel = GaussSeidel(*data)
     gauss_seidel.compute_result()
+    gauss_seidel.generate_plot()
     gauss_seidel.print_result()
 
     jacoby = Jacoby(*data)
     jacoby.compute_result()
+    jacoby.generate_plot()
     jacoby.print_result()
 
 

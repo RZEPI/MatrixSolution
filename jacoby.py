@@ -1,27 +1,17 @@
-from mymatrix import *
+from iterativemethod import *
 
-class Jacoby(MyMatrix):
+class Jacoby(IterativeMethod):
     name = "Jacoby's"
     def __init__(self,x1,x2,x3, N=903):
         super().__init__(x1,x2,x3,N)
-
-    def compute_result(self):
-        r = np.ones(self.N)
-        D = np.diag(np.diag(self.matrix))
-        L = np.tril(self.matrix, -1)
-        U = np.triu(self.matrix, 1)
-        residuum = 1
         self.iterations = 0
 
-        expression1 = -np.linalg.solve(D, (L+U))
-        expression2 = np.linalg.solve(D, self.b_vec)
+    def define_expressions(self):
+        self.expression1 = -np.linalg.solve(self.D, (self.L + self.U))
+        self.expression2 = np.linalg.solve(self.D, self.b_vec)
+        
+    def compute_iteration(self):
+        self.result = (self.expression1 @ self.result) + self.expression2
 
-        while np.linalg.norm(residuum) > super().NORM:
-            r = (expression1 @ r) + expression2
-            residuum = (self.matrix @ r) - self.b_vec
-            self.iterations += 1
-
-            if self.iterations > super().MAX_ITERS:
-                self.iterations = math.inf
-                break
-        self.result = r
+    def compute_result(self):
+        super().compute_result(self)        
