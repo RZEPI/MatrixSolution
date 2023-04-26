@@ -1,6 +1,8 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from time import time
+
 
 class MyMatrix:
     f = 1
@@ -11,7 +13,7 @@ class MyMatrix:
         self.x1 = x1
         self.x2 = x2
         self.x3 = x3
-        
+
         self.generate_matrix()
         self.generate_b_vector()
 
@@ -36,18 +38,17 @@ class MyMatrix:
             self.b_vec[i] = np.sin(i*(self.f+1))
 
     def compute_result(self):
-        self.result =  np.linalg.solve(self.matrix, self.b_vec)
+        start = time()
+        self.result = np.linalg.solve(self.matrix, self.b_vec)
+        end = time()
+        self.time_of_computations = end - start
 
     def print_components(self):
         print(f"Matrix:\n{self.matrix}\nVector:\n{self.b_vec}")
 
     def print_result(self, show_matrix=False):
         output = f"The {self.name} method ended\n"
-
         if show_matrix:
             output += f"Result:{self.result}"
 
         print(output)
-           
-
-    
