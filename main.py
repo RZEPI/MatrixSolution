@@ -24,7 +24,7 @@ def solve_matrix(data, iteration):
     gauss_seidel = GaussSeidel(*data)
     gauss_seidel.compute_result()
     gauss_seidel.generate_plot()
-    gauss_seidel.print_result()
+    gauss_seidel.print_result(show_matrix=True)
 
     jacoby = Jacoby(*data)
     jacoby.compute_result()
