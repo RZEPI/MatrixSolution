@@ -24,7 +24,7 @@ class IterativeMethod(MyMatrix):
         self.L = np.tril(self.matrix, -1)
         self.U = np.triu(self.matrix, 1)
         self.residuum = 1
-        self.norms = [np.linalg.norm(self.residuum)]
+        self.norms = [1]
 
     def compute_result(self, method):
         self.prepare_params()
@@ -34,7 +34,7 @@ class IterativeMethod(MyMatrix):
             method.compute_iteration()
             self.residuum = (self.matrix @ self.result) - self.b_vec
             self.iterations += 1
-            self.norms.append(np.linalg.norm(self.residuum))
+            self.norms.append(super().norm())
 
             if self.iterations > self.MAX_ITERS:
                 self.iterations = math.inf
@@ -42,6 +42,9 @@ class IterativeMethod(MyMatrix):
         end = time()
         self.time_of_computations = end - start
         self.norms = self.norms[1:]
+
+    def solve(self, matrix, vector):
+        super().solve(matrix, vector)
 
     def print_result(self, show_matrix=False):
         output = f"The {self.name}'s method ended in {self.time_of_computations} seconds"
@@ -67,7 +70,7 @@ class IterativeMethod(MyMatrix):
 
         ax.set_xlabel("Iteration")
         ax.set_ylabel("Residuum norm in following iteration")
-        ax.set_title("Residuum norm")
+        ax.set_title(f"Residuum norm - {self.name}")
 
         plt.savefig(f'{self.name}_method_residuum_norm.png')
         plt.show(block=False)

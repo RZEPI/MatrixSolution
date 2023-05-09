@@ -1,4 +1,4 @@
-from mymatrix import MyMatrix
+from mymatrix import MyMatrix, np
 from mymatrix import plt
 from gaussseidel import GaussSeidel
 from jacoby import Jacoby
@@ -20,7 +20,6 @@ def get_names():
     return [MyMatrix.name, GaussSeidel.name, Jacoby.name, LUDecomp.name]
 
 def print_comp_results(times, sizes):
-    plt.plot(sizes, times['npsolve'], 'b-', label='Numpy Solve')
     plt.plot(sizes, times['gauss'], 'r-', label='Gauss-Seidel')
     plt.plot(sizes, times['jacobian'], 'g-',label='Jacobi')
     plt.plot(sizes, times['ludecomp'], 'm-',label='LU Decomposition')
@@ -36,13 +35,9 @@ def print_comp_results(times, sizes):
 def compare_times(data, iter_numbers):
     matrix_sizes = [ i for i in range(1000, iter_numbers*1000, 1000) ]
     matrix_sizes = [100, 500] + matrix_sizes
-    times =  {'npsolve':[], 'gauss':[], 'jacobian':[], 'ludecomp':[]}
+    times =  {'gauss':[], 'jacobian':[], 'ludecomp':[]}
 
     for size in matrix_sizes:
-        matrix = MyMatrix(*data, N=size)
-        matrix.compute_result()
-        times['npsolve'].append(matrix.time_of_computations)
-
         gauss_seidel = GaussSeidel(*data, N=size)
         gauss_seidel.compute_result()
         times['gauss'].append(gauss_seidel.time_of_computations)
@@ -61,7 +56,7 @@ def compare_times(data, iter_numbers):
 def solve_matrix(data, iteration):
     matrix = MyMatrix(*data)
     matrix.compute_result()
-    matrix.print_result()
+    matrix.print_result(show_matrix=True)
 
     gauss_seidel = GaussSeidel(*data)
     gauss_seidel.compute_result()

@@ -37,7 +37,7 @@ class LUDecomp(MyMatrix):
         y[0] = self.b_vec[0] / self.L[0, 0]
 
         for i in range(1, n):
-            y[i] = (self.b_vec[i] - np.dot(self.L[i, :i], y[:i])) / self.L[i, i]
+            y[i] = (self.b_vec[i] - (self.L[i, :i] @ y[:i])) / self.L[i, i]
 
         self.y = y
 
@@ -49,7 +49,7 @@ class LUDecomp(MyMatrix):
         x[-1] = self.y[-1] / self.U[-1, -1]
 
         for i in range(n-2, -1, -1):
-            x[i] = (self.y[i] - np.dot(self.U[i, i:], x[i:])) / self.U[i, i]
+            x[i] = (self.y[i] - (self.U[i, i:] @ x[i:])) / self.U[i, i]
 
         self.result = x
 
@@ -60,8 +60,10 @@ class LUDecomp(MyMatrix):
         self.back_substitution()
         end = time()
         self.time_of_computations = end - start
+        print(f"LU decomposition ended in {self.time_of_computations} seconds")
         self.compute_residuum()
 
     def compute_residuum(self):
         self.residuum = self.matrix @ self.result - self.b_vec
-        self.norm_residuum = np.linalg.norm(self.residuum)
+        self.norm_residuum = super().norm()
+        print(f"Its residuum norm: {self.norm_residuum}")

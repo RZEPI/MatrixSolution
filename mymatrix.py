@@ -1,12 +1,13 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from copy import deepcopy
 from time import time
 
 
 class MyMatrix:
     f = 1
-    name = "numpy's solve"
+    name = "direct method"
 
     def __init__(self, x1, x2, x3, N=903):
         self.N = N
@@ -39,9 +40,30 @@ class MyMatrix:
 
     def compute_result(self):
         start = time()
-        self.result = np.linalg.solve(self.matrix, self.b_vec)
+        self.result = self.solve(self.matrix, self.b_vec)
         end = time()
         self.time_of_computations = end - start
+
+    def solve(self, matrix, vector):
+        n = matrix.shape[0]
+
+        x = np.zeros((n,1))
+
+        vector_copy = deepcopy(vector)
+        matrix_copy = deepcopy(matrix)
+
+        for i in range(n-1, -1, -1):
+            for j in range(i+1, n):
+                vector_copy[i] = vector_copy[i] - matrix_copy[i,j] * x[j]
+            x[i] = vector_copy[i] / matrix_copy[i,i]
+
+        return x
+
+    def norm(self):
+        sum = 0
+        for i in self.residuum:
+            sum += i**2
+        return math.sqrt(sum)
 
     def print_components(self):
         print(f"Matrix:\n{self.matrix}\nVector:\n{self.b_vec}")

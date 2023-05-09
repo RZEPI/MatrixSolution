@@ -1,6 +1,5 @@
 from iterativemethod import *
 
-
 class GaussSeidel(IterativeMethod):
     name = "GaussSeidel's"
 
@@ -9,7 +8,7 @@ class GaussSeidel(IterativeMethod):
 
     def define_expressions(self):
         self.expression1 = self.D + self.L
-        self.expression2 = np.linalg.solve(self.expression1, self.b_vec)
+        self.expression2 = super().solve(self.expression1, self.b_vec)
 
     def compute_iteration(self):
         for i in range(self.matrix.shape[0]):
