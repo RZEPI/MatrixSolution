@@ -20,16 +20,15 @@ class IterativeMethod(MyMatrix):
              - norms - norm of residuum for the following iteration"""
 
         self.result = np.ones(self.N)
-        self.D = np.diag(np.diag(self.matrix))
-        self.L = np.tril(self.matrix, -1)
-        self.U = np.triu(self.matrix, 1)
+        self.D = self.diag()
+        self.L, self.U = self.tril_and_triu()
         self.residuum = 1
         self.norms = [1]
 
     def compute_result(self, method):
+        start = time()
         self.prepare_params()
         method.define_expressions()
-        start = time()
         while self.norms[self.iterations] > self.NORM:
             method.compute_iteration()
             self.residuum = (self.matrix @ self.result) - self.b_vec
@@ -45,6 +44,30 @@ class IterativeMethod(MyMatrix):
 
     def solve(self, matrix, vector):
         super().solve(matrix, vector)
+
+    def diag(self):
+        diag = np.zeros(self.matrix.shape, dtype=np.double)
+        for i in range(self.matrix.shape[0]):
+            diag[i, i] = self.matrix[i, i]
+        return diag
+
+    def diag_flat(self):
+        diag = np.zeros(self.matrix.shape[0], dtype=np.double)
+        for i in range(self.matrix.shape[0]):
+            diag[i] = self.matrix[i, i]
+        return diag
+
+    def tril_and_triu(self):
+        lower = np.zeros(self.matrix.shape, dtype=np.double)
+        upper = np.zeros(self.matrix.shape, dtype=np.double)
+        for i in range(self.matrix.shape[0]):
+            for j in range(self.matrix.shape[0]):
+                if i < j:
+                    upper[i, j] = self.matrix[i, j]
+
+                if i > j:
+                    lower[i, j] = self.matrix[i, j]
+        return lower, upper
 
     def print_result(self, show_matrix=False):
         output = f"The {self.name}'s method ended in {self.time_of_computations} seconds"

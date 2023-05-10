@@ -9,10 +9,11 @@ class Jacoby(IterativeMethod):
 
     def define_expressions(self):
         self.expression1 = self.matrix - self.D
-        self.expression2 = np.diag(self.matrix)
+        self.expression2 = self.diag_flat()
 
     def compute_iteration(self):
-        self.result = (self.b_vec - (self.expression1 @ self.result)) / self.expression2
+        self.result = (self.b_vec - (self.expression1 @
+                       self.result)) / self.expression2
 
     def compute_result(self):
         super().compute_result(self)

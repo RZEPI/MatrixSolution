@@ -45,17 +45,25 @@ class MyMatrix:
         self.time_of_computations = end - start
 
     def solve(self, matrix, vector):
-        n = matrix.shape[0]
+        temp_matrix = np.c_[matrix, vector]
 
-        x = np.zeros((n,1))
+        n = temp_matrix.shape[0]
 
-        vector_copy = deepcopy(vector)
-        matrix_copy = deepcopy(matrix)
+        for i in range(n):
 
-        for i in range(n-1, -1, -1):
-            for j in range(i+1, n):
-                vector_copy[i] = vector_copy[i] - matrix_copy[i,j] * x[j]
-            x[i] = vector_copy[i] / matrix_copy[i,i]
+            pivot = np.abs(temp_matrix[i:, i]).argmax()
+            pivot += i
+            if pivot != i:
+                temp_matrix[[pivot, i]] = temp_matrix[[i, pivot]]
+
+            factor = temp_matrix[i+1:, i] / temp_matrix[i, i]
+            temp_matrix[i+1:] -= factor[:, np.newaxis] * temp_matrix[i]
+        x = np.zeros_like(vector, dtype=np.double)
+        x[-1] = temp_matrix[-1, -1] / temp_matrix[-1, -2]
+
+        for i in range(n-2, -1, -1):
+            x[i] = (temp_matrix[i, -1] - (temp_matrix[i, i:-1] @ x[i:])
+                    ) / temp_matrix[i, i]
 
         return x
 

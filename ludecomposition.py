@@ -16,10 +16,16 @@ class LUDecomp(MyMatrix):
             - y - supp vector"""
         self.lu()
 
+    def make_eye(self):
+        eye = np.zeros(self.matrix.shape, dtype=np.double)
+        for i in range(self.matrix.shape[0]):
+            eye[i, i] = 1
+        return eye
+
     def lu(self):
         n = self.matrix.shape[0]
         U = deepcopy(self.matrix)
-        L = np.eye(n, dtype=np.double)
+        L = self.make_eye()
 
         for i in range(n):
             factor = U[i+1:, i] / U[i, i]
@@ -54,8 +60,8 @@ class LUDecomp(MyMatrix):
         self.result = x
 
     def compute_result(self):
-        self.prepare_params()
         start = time()
+        self.prepare_params()
         self.forward_substitution()
         self.back_substitution()
         end = time()

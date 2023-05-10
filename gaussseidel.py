@@ -1,5 +1,6 @@
 from iterativemethod import *
 
+
 class GaussSeidel(IterativeMethod):
     name = "GaussSeidel's"
 
@@ -12,7 +13,8 @@ class GaussSeidel(IterativeMethod):
 
     def compute_iteration(self):
         for i in range(self.matrix.shape[0]):
-            self.result[i] = (self.b_vec[i] - (self.matrix[i, :i] @ self.result[:i]) - (self.matrix[i, (i+1):] @ self.result[i+1:])) / self.matrix[i, i]
+            self.result[i] = (self.b_vec[i] - (self.matrix[i, :i] @ self.result[:i]) - (
+                self.matrix[i, (i+1):] @ self.result[i+1:])) / self.matrix[i, i]
 
     def compute_result(self):
         super().compute_result(self)

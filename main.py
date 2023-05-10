@@ -6,6 +6,7 @@ from ludecomposition import LUDecomp
 
 e = 7
 
+
 def print_times(times, iteration):
     plt.bar(get_names(), times)
     plt.title("Time of computations for each method")
@@ -16,13 +17,15 @@ def print_times(times, iteration):
     plt.pause(2)
     plt.close()
 
+
 def get_names():
     return [MyMatrix.name, GaussSeidel.name, Jacoby.name, LUDecomp.name]
 
+
 def print_comp_results(times, sizes):
     plt.plot(sizes, times['gauss'], 'r-', label='Gauss-Seidel')
-    plt.plot(sizes, times['jacobian'], 'g-',label='Jacobi')
-    plt.plot(sizes, times['ludecomp'], 'm-',label='LU Decomposition')
+    plt.plot(sizes, times['jacobian'], 'g-', label='Jacobi')
+    plt.plot(sizes, times['ludecomp'], 'm-', label='LU Decomposition')
     plt.title('Time for different sizes of matrix')
     plt.legend(loc='upper left')
     plt.xlabel('Sizes of matrix')
@@ -32,10 +35,11 @@ def print_comp_results(times, sizes):
     plt.pause(2)
     plt.close()
 
+
 def compare_times(data, iter_numbers):
-    matrix_sizes = [ i for i in range(1000, iter_numbers*1000, 1000) ]
+    matrix_sizes = [i for i in range(1000, iter_numbers*1000, 1000)]
     matrix_sizes = [100, 500] + matrix_sizes
-    times =  {'gauss':[], 'jacobian':[], 'ludecomp':[]}
+    times = {'gauss': [], 'jacobian': [], 'ludecomp': []}
 
     for size in matrix_sizes:
         gauss_seidel = GaussSeidel(*data, N=size)
@@ -51,12 +55,12 @@ def compare_times(data, iter_numbers):
         times['ludecomp'].append(ludemcomp.time_of_computations)
 
     print_comp_results(times, matrix_sizes)
-    
+
 
 def solve_matrix(data, iteration):
     matrix = MyMatrix(*data)
     matrix.compute_result()
-    matrix.print_result(show_matrix=True)
+    matrix.print_result()
 
     gauss_seidel = GaussSeidel(*data)
     gauss_seidel.compute_result()
@@ -73,7 +77,7 @@ def solve_matrix(data, iteration):
     ludecomp.print_result()
 
     times = [matrix.time_of_computations, gauss_seidel.time_of_computations,
-                jacoby.time_of_computations, ludecomp.time_of_computations]
+             jacoby.time_of_computations, ludecomp.time_of_computations]
     print_times(times, iteration)
 
 
