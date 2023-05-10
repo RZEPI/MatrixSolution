@@ -8,8 +8,7 @@ class GaussSeidel(IterativeMethod):
         super().__init__(x1, x2, x3, N)
 
     def define_expressions(self):
-        self.expression1 = self.D + self.L
-        self.expression2 = super().solve(self.expression1, self.b_vec)
+        pass
 
     def compute_iteration(self):
         for i in range(self.matrix.shape[0]):

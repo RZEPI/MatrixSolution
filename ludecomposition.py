@@ -43,7 +43,8 @@ class LUDecomp(MyMatrix):
         y[0] = self.b_vec[0] / self.L[0, 0]
 
         for i in range(1, n):
-            y[i] = (self.b_vec[i] - (self.L[i, :i] @ y[:i])) / self.L[i, i]
+            s = sum(self.L[i, i] * y[j] for j in range(i))
+            y[i] = self.b_vec[i] - s
 
         self.y = y
 

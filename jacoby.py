@@ -12,8 +12,8 @@ class Jacoby(IterativeMethod):
         self.expression2 = self.diag_flat()
 
     def compute_iteration(self):
-        self.result = (self.b_vec - (self.expression1 @
-                       self.result)) / self.expression2
+            self.result = (self.b_vec - (self.expression1 @
+                        self.result)) / self.expression2
 
     def compute_result(self):
         super().compute_result(self)
