@@ -37,7 +37,7 @@ def print_comp_results(times, sizes):
 
 
 def compare_times(data, iter_numbers):
-    matrix_sizes = [i for i in range(1000, iter_numbers*1000, 1000)]
+    matrix_sizes = [i for i in range(1000, (iter_numbers+1)*1000, 1000)]
     matrix_sizes = [100, 500] + matrix_sizes
     times = {'gauss': [], 'jacobian': [], 'ludecomp': []}
 
@@ -74,7 +74,7 @@ def solve_matrix(data, iteration):
 
     ludecomp = LUDecomp(*data)
     ludecomp.compute_result()
-    ludecomp.print_result()
+    ludecomp.print_result(show_matrix=True)
 
     times = [matrix.time_of_computations, gauss_seidel.time_of_computations,
              jacoby.time_of_computations, ludecomp.time_of_computations]
